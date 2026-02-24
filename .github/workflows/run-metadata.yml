@@ -33,15 +33,15 @@ jobs:
       # ==========================================
       - name: Detect and Run Migration Scripts
         env:
-          gitlab_token: ${{ secrets.GITLAB_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          gitlabtoken: ${{ secrets.GITLAB_TOKEN }}
+          githubtoken: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "🔎 Searching for migration scripts..."
+          echo " Searching for migration scripts..."
 
           FOUND=0
 
-          # 1️⃣ Check root-level scripts
-          for file in migrate_*.py extract_*.py; do
+          # Check root-level scripts
+          for file in metadata.py; do
             if [ -f "$file" ]; then
               echo "▶ Executing root script: $file"
               python "$file"
@@ -49,22 +49,22 @@ jobs:
             fi
           done
 
-          # 2️⃣ Check folder-level scripts
-          if [ -d "migration-scripts" ]; then
-            for file in migration-scripts/migrate_*.py migration-scripts/extract_*.py; do
-              if [ -f "$file" ]; then
-                echo "▶ Executing folder script: $file"
-                python "$file"
-                FOUND=1
-              fi
-            done
-          fi
+        #   # Check folder-level scripts
+        #   if [ -d "migration-scripts" ]; then
+        #     for file in migration-scripts/migrate_*.py migration-scripts/extract_*.py; do
+        #       if [ -f "$file" ]; then
+        #         echo "▶ Executing folder script: $file"
+        #         python "$file"
+        #         FOUND=1
+        #       fi
+        #     done
+        #   fi
 
-          # 3️⃣ Fail if nothing found
-          if [ $FOUND -eq 0 ]; then
-            echo "❌ No migration scripts found."
-            exit 1
-          fi
+        #   # Fail if nothing found
+        #   if [ $FOUND -eq 0 ]; then
+        #     echo " No migration scripts found."
+        #     exit 1
+        #   fi
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
