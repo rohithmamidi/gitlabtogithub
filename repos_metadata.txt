@@ -1,2 +1,0 @@
-rohithmamidi123/microservices-demo
-rohithmamidi123/aws-eks-vpc-tf
