@@ -3,9 +3,7 @@ name: Smart Migration Script Runner
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
-
+      - feature/metadataworkflow
 jobs:
   run-scripts:
     runs-on: ubuntu-latest
@@ -36,7 +34,7 @@ jobs:
           echo "Running migration..."
 
           python scripts/repo/gitlab_metadata.py
-          python gitlab_to_github_metadata.py \
+          python scripts/repo/gitlab_to_github_metadata.py \
             --gitlab-project group/repo \
             --github-org your-org \
             --github-repo repo-name
@@ -48,3 +46,4 @@ jobs:
           path: |
             *.csv
             *.log
+            output/
