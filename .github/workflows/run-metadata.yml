@@ -3,7 +3,7 @@ name: Smart Migration Script Runner
 on:
   push:
     branches:
-    - main
+      - main
   workflow_dispatch:
 
 jobs:
@@ -28,43 +28,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install python-gitlab PyGithub requests PyJWT python-dotenv openpyxl
 
-      # ==========================================
-      # Smart Detection: Root + Folder
-      # ==========================================
-      - name: Detect and Run Migration Scripts
+      - name: Run Metadata Migration
         env:
-          gitlabtoken: ${{ secrets.GITLAB_TOKEN }}
-          githubtoken: ${{ secrets.GITHUB_TOKEN }}
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo " Searching for migration scripts..."
+          echo "Running migration..."
 
-          FOUND=0
-
-          # Check root-level scripts
-          for file in metadata.py; do
-            if [ -f "$file" ]; then
-              echo "▶ Executing root script: $file"
-              python "$file"
-              FOUND=1
-            fi
-          done
-
-        #   # Check folder-level scripts
-        #   if [ -d "migration-scripts" ]; then
-        #     for file in migration-scripts/migrate_*.py migration-scripts/extract_*.py; do
-        #       if [ -f "$file" ]; then
-        #         echo "▶ Executing folder script: $file"
-        #         python "$file"
-        #         FOUND=1
-        #       fi
-        #     done
-        #   fi
-
-        #   # Fail if nothing found
-        #   if [ $FOUND -eq 0 ]; then
-        #     echo " No migration scripts found."
-        #     exit 1
-        #   fi
+          python scripts/repo/gitlab_metadata.py
+          python gitlab_to_github_metadata.py \
+            --gitlab-project group/repo \
+            --github-org your-org \
+            --github-repo repo-name
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -73,4 +48,3 @@ jobs:
           path: |
             *.csv
             *.log
-            output/
