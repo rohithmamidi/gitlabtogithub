@@ -28,18 +28,18 @@ jobs:
 
       - name: Run Metadata Migration
         env:
-          gitlabtoken: ${{ secrets.GITLAB_TOKEN }}
-          githubtoken: ${{ secrets.GITHUB_TOKEN }}
+          GITLABTOKEN: ${{ secrets.GITLAB_TOKEN }}
+          GITHUBTOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Running migration..."
 
           python scripts/repo/gitlab_metadata.py
           python scripts/repo/gitlab_to_github_metadata.py \
-            --gitlab-token "${gitlabtoken}" \
-            --github-token "${githubtoken}" \
-            --gitlab-project group/repo \
-            --github-org your-org \
-            --github-repo repo-name
+            --gitlab-token "${GITLABTOKEN}" \
+            --github-token "${GITHUBTOKEN}" \
+            --gitlab-project mygroup/myrepo \
+            --github-org rohithmamidi \
+            --github-repo gitlabtogithub
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
