@@ -1,16 +1,21 @@
-name: Smart Migration Script Runner
+name: Metadata scripts Extractor
 
 on:
-  push:
-    branches:
-      - feature/metadataworkflow
-jobs:
-  run-scripts:
-    runs-on: ubuntu-latest
+  workflow_call:
+    inputs:
+      github-org:
+        description: "Target GitHub organization or username"
+        required: true
+        type: string
+    secrets:
+      GITLABTOKEN:
+        required: true
+      GITHUBTOKEN:
+        required: true
 
-    concurrency:
-      group: migration
-      cancel-in-progress: false
+jobs:
+  extract-metadata:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -26,13 +31,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install python-gitlab PyGithub requests PyJWT python-dotenv openpyxl
 
-      - name: Run Metadata Migration
+      - name: Run Metadata Extraction
         env:
           GITLABTOKEN: ${{ secrets.GITLABTOKEN }}
           GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+          TARGET_ORG: ${{ inputs.github-org }}
         run: |
-          echo "Running migration..."
-
+          echo "Running reusable metadata extraction..."
           python scripts/repo/gitlab_metadata.py
 
       - name: Upload Artifacts

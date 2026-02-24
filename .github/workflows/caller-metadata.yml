@@ -1,0 +1,13 @@
+name: caller Metadata Extraction
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-reusable-workflow:
+    uses: rohithmamidi/gitlabtogithub/.github/workflows/reusable-metadata.yml@feature/metadataworkflow
+    with:
+      github-org: rohithmamidi
+    secrets:
+      GITLABTOKEN: ${{ secrets.GITLABTOKEN }}
+      GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
