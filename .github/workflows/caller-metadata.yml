@@ -5,7 +5,7 @@ on:
 
 jobs:
   call-reusable-workflow:
-    uses: rohithmamidi/gitlabtogithub/.github/workflows/reusable-metadata.yml@feature/metadataworkflow
+    uses: rohithmamidi/gitlabtogithub/.github/workflows/run-metadata.yml@feature/metadataworkflow
     with:
       github-org: rohithmamidi
     secrets:
