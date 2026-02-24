@@ -34,7 +34,6 @@ jobs:
           echo "Running migration..."
 
           python scripts/repo/gitlab_metadata.py
-          python scripts/repo/gitlab_to_github_metadata.py \
             --gitlab-token "${GITLABTOKEN}" \
             --github-token "${GITHUBTOKEN}" \
             --gitlab-project mygroup/myrepo \
