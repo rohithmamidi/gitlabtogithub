@@ -28,13 +28,15 @@ jobs:
 
       - name: Run Metadata Migration
         env:
-          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          gitlabtoken: ${{ secrets.GITLAB_TOKEN }}
+          githubtoken: ${{ secrets.GITHUB_TOKEN }}
         run: |
           echo "Running migration..."
 
           python scripts/repo/gitlab_metadata.py
           python scripts/repo/gitlab_to_github_metadata.py \
+            --gitlab-token "${gitlabtoken}" \
+            --github-token "${githubtoken}" \
             --gitlab-project group/repo \
             --github-org your-org \
             --github-repo repo-name
