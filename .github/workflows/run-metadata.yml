@@ -34,11 +34,6 @@ jobs:
           echo "Running migration..."
 
           python scripts/repo/gitlab_metadata.py
-            --gitlab-token "${GITLABTOKEN}" \
-            --github-token "${GITHUBTOKEN}" \
-            --gitlab-project mygroup/myrepo \
-            --github-org rohithmamidi \
-            --github-repo gitlabtogithub
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
