@@ -1,0 +1,11 @@
+2026-02-19 19:56:03,312 - INFO - Processing: rohithmamidi123/microservices-demo
+2026-02-19 19:56:07,257 - INFO - Created repo in user account
+2026-02-19 19:56:07,257 - INFO - Starting mirror migration...
+2026-02-19 19:56:12,978 - INFO - Pushing branches and tags
+2026-02-19 19:56:21,713 - INFO - Code migration completed
+2026-02-19 19:56:21,776 - INFO - Processing: rohithmamidi123/aws-eks-vpc-tf
+2026-02-19 19:56:25,321 - INFO - Created repo in user account
+2026-02-19 19:56:25,322 - INFO - Starting mirror migration...
+2026-02-19 19:56:27,413 - INFO - Pushing branches and tags
+2026-02-19 19:56:31,595 - INFO - Code migration completed
+2026-02-19 19:56:31,605 - INFO - All migrations completed
