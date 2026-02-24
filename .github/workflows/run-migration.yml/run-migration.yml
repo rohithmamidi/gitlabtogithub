@@ -1,0 +1,73 @@
+name: Smart Migration Script Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: migration
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install python-gitlab PyGithub requests PyJWT python-dotenv
+
+      # ==========================================
+      # Smart Detection: Root + Folder
+      # ==========================================
+      - name: Detect and Run Migration Scripts
+        env:
+          gitlab_token: ${{ secrets.GITLAB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🔎 Searching for migration scripts..."
+
+          FOUND=0
+
+          # 1️⃣ Check root-level scripts
+          for file in migrate_*.py extract_*.py; do
+            if [ -f "$file" ]; then
+              echo "▶ Executing root script: $file"
+              python "$file"
+              FOUND=1
+            fi
+          done
+
+          # 2️⃣ Check folder-level scripts
+          if [ -d "migration-scripts" ]; then
+            for file in migration-scripts/migrate_*.py migration-scripts/extract_*.py; do
+              if [ -f "$file" ]; then
+                echo "▶ Executing folder script: $file"
+                python "$file"
+                FOUND=1
+              fi
+            done
+          fi
+
+          # 3️⃣ Fail if nothing found
+          if [ $FOUND -eq 0 ]; then
+            echo "❌ No migration scripts found."
+            exit 1
+          fi
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-artifacts
+          path: |
+            *.csv
+            *.log
+            output/
