@@ -1,7 +1,9 @@
 name: caller Metadata Extraction
 
 on:
-  workflow_dispatch:
+    push:
+      branches:
+        - feature/metadataworkflow
 
 jobs:
   call-reusable-workflow:
