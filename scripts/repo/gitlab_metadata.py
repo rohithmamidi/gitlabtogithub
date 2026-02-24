@@ -10,7 +10,7 @@ GITLAB_URL = "https://gitlab.com"
 
 def extract_gitlab_metadata(output_file="gitlab_migration_inventory.csv"):
 
-    gitlab_token = os.getenv("GITLAB_TOKEN")
+    gitlab_token = os.getenv("GITLABTOKEN")
     if not gitlab_token:
         print("❌ Error: GITLAB_TOKEN environment variable not set.")
         return
